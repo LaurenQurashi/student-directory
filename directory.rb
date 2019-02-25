@@ -43,12 +43,12 @@ def print_header
 end
 
 def print(students)
-  count = 0
-  until count == students.count
+  if students.empty?
+    puts "We currently have no students".center(60)
+  else
     students.each_with_index do |student, index|
-      puts "#{students[count][:name]} (#{students[count][:cohort]})".center(60)
-      puts "Born in: #{students[count][:birthplace]}, Hobby: #{students[count][:hobby]}".center(60)
-      count += 1
+      puts "#{students[index][:name]} (#{students[index][:cohort]})".center(60)
+      puts "Born in: #{students[index][:birthplace]}, Hobby: #{students[index][:hobby]}".center(60)
     end
   end
 end
@@ -93,10 +93,8 @@ end
 
 def print_footer(students)
   # ensures plurals are used if needed
-  if students.length > 1
+  if students.length > 0
     puts "Overall, we have #{students.count} great students".center(60)
-  else
-    puts "Overall, we have #{students.count} great student".center(60)
   end
 end
 students = input_students
