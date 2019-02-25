@@ -5,7 +5,7 @@ def input_students
   # create an empty array
   students = []
   # get the first name
-  name = gets.chomp.capitalize
+  name = gets.strip
   # while the name is not empty, repeat this code
   while !name.empty? do
     # get and add the student's hobbies and birthplace to the hash.
