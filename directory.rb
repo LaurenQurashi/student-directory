@@ -8,7 +8,7 @@ def input_students
   name = gets.chomp.capitalize
   # while the name is not empty, repeat this code
   while !name.empty? do
-    # get and add the student's hobbies, birthplace, and height to the hash.
+    # get and add the student's hobbies and birthplace to the hash.
     puts "Which hobby?"
     hobby = gets.chomp.capitalize
     puts "Where were they born?"
@@ -17,14 +17,19 @@ def input_students
     cohort = gets.chomp.downcase
     # matches the user input against the months, if they make a typo, they're asked again
     unless ["january", "february", "march", "april", "may", "june", "july",
-        "august", "september", "october", "november", "december"].include? cohort
-        puts "Please enter a valid month"
-        cohort = gets.chomp.downcase
+    "august", "september", "october", "november" "december"].include? cohort
+      puts "Please enter a valid month"
+      cohort = gets.chomp.downcase
     end
     cohort.to_sym
     students << {name: name, hobby: hobby, birthplace: birthplace,
       cohort: cohort.capitalize}
-    puts "Now we have #{students.count} students"
+    # ensures plurals are used if needed
+    if students.length > 1
+      puts "Now we have #{students.count} students"
+    else
+      puts "Now we have #{students.count} student"
+    end
     # get another name from the user
     name = gets.chomp.capitalize
   end
@@ -63,12 +68,40 @@ def print_lessthan12(students)
     end
   end
 end
-# end of practice methods
-def print_footer(students)
-  puts "Overall, we have #{students.count} great students".center(60)
+
+def cohorts(students)
+  listed_cohorts = []
+  students.each do |student|
+    unless listed_cohorts.include? student[:cohort]
+      listed_cohorts << student[:cohort]
+    end
+  end
+  listed_cohorts
 end
-#nothing happens until we call the methods
+
+def print_by_cohort(students, listed_cohorts)
+  listed_cohorts.each do |month|
+    students.each do |student|
+      if student[:cohort] == month
+        puts "#{student[:name]} (#{student[:cohort]} cohort),born in: #{student[:birthplace]} hobby: #{student[:hobby]}"
+      end
+    end
+  end
+end
+
+# end of practice methods
+
+def print_footer(students)
+  # ensures plurals are used if needed
+  if students.length > 1
+    puts "Overall, we have #{students.count} great students".center(60)
+  else
+    puts "Overall, we have #{students.count} great student".center(60)
+  end
+end
 students = input_students
+cohorts = cohorts(students)
+#nothing happens until we call the methods
 print_header
 print(students)
 print_footer(students)
