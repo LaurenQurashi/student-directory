@@ -1,4 +1,5 @@
 
+@students = []
 def interactive_menu
   students = []
   loop do
@@ -28,34 +29,48 @@ end
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  # create an empty array
-  students = []
   # get the first name
   name = gets.chomp
   # while the name is not empty, repeat this code
   while !name.empty? do
-    # get and add the student's cohort
-    puts "Which cohort are they in?"
-    cohort = gets.chomp.downcase
-    # matches the user input against the months, if they make a typo, they're asked again
-    unless ["january", "february", "march", "april", "may", "june", "july",
-    "august", "september", "october", "november" "december"].include? cohort
-      puts "Please enter a valid month"
-      cohort = gets.chomp.downcase
-    end
-    cohort.to_sym
-    students << {name: name, cohort: cohort.capitalize}
-    # ensures plurals are used if needed
-    if students.length > 1
-      puts "Now we have #{students.count} students"
-    else
-      puts "Now we have #{students.count} student"
-    end
+    # add the student hash to the array
+    @students << {name: name, cohort: :november}
+    puts "Now we have #{@students.count} students"
     # get another name from the user
-    name = gets.chomp.capitalize
+    name = gets.chomp
   end
-  # return the array of students
-  students
+end
+
+def interactive_menu
+  loop do
+    print_menu
+    process(gets.chomp)
+  end
+end
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit" # 9 because we'll be adding more items
+end
+
+def show_students
+  print_header
+  print_student_list
+  print_footer
+end
+
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "9"
+    exit # this will cause the program to terminate
+  else
+    puts "I don't know what you meant, try again"
+  end
 end
 
 def print_header
@@ -63,20 +78,13 @@ def print_header
   puts "-------------".center(60)
 end
 
-def print(students)
-  if students.empty?
-    puts "We currently have no students".center(60)
-  else
-    students.each_with_index do |student, index|
-      puts "#{students[index][:name]} (#{students[index][:cohort]})".center(60)
-    end
+def print_student_list
+  @students.each do |student|
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
 
-def print_footer(students)
-  # ensures plurals are used if needed
-  if students.length > 0
-    puts "Overall, we have #{students.count} great students".center(60)
-  end
+def print_footer
+  puts "Overall, we have #{@students.count} great students"
 end
 interactive_menu
