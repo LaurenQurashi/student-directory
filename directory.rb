@@ -1,18 +1,40 @@
 
+def interactive_menu
+  students = []
+  loop do
+    # 1. print the menu and ask the user what to do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit" # 9 because we'll be adding more items
+    # 2. read the input and save it into a variable
+    selection = gets.chomp
+    # 3. do what the user has asked
+    case selection
+    when "1"
+      students = input_students
+    when "2"
+      print_header
+      print(students)
+      print_footer(students)
+    when "9"
+      exit # this will cause the program to terminate
+    else
+      puts "I don't know what you meant, try again"
+    end
+  end
+end
+
+
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
   # create an empty array
   students = []
   # get the first name
-  name = gets.strip
+  name = gets.chomp
   # while the name is not empty, repeat this code
   while !name.empty? do
-    # get and add the student's hobbies and birthplace to the hash.
-    puts "Which hobby?"
-    hobby = gets.chomp.capitalize
-    puts "Where were they born?"
-    birthplace = gets.chomp.capitalize
+    # get and add the student's cohort
     puts "Which cohort are they in?"
     cohort = gets.chomp.downcase
     # matches the user input against the months, if they make a typo, they're asked again
@@ -22,8 +44,7 @@ def input_students
       cohort = gets.chomp.downcase
     end
     cohort.to_sym
-    students << {name: name, hobby: hobby, birthplace: birthplace,
-      cohort: cohort.capitalize}
+    students << {name: name, cohort: cohort.capitalize}
     # ensures plurals are used if needed
     if students.length > 1
       puts "Now we have #{students.count} students"
@@ -48,48 +69,9 @@ def print(students)
   else
     students.each_with_index do |student, index|
       puts "#{students[index][:name]} (#{students[index][:cohort]})".center(60)
-      puts "Born in: #{students[index][:birthplace]}, Hobby: #{students[index][:hobby]}".center(60)
     end
   end
 end
-# These are practice methods for step 8 of the challenge
-def print_beginning_with(students)
-  students.each_with_index do |student, index|
-    if students{:name}.start_with?("L")
-    puts " #{index + 1}. #{students[:name]} (#{students[:cohort]} cohort)"
-    end
-  end
-end
-
-def print_lessthan12(students)
-  students.each_with_index do |student, index|
-    if students{:name}.length < 12
-    puts " #{index + 1}. #{students[:name]} (#{students[:cohort]} cohort)"
-    end
-  end
-end
-
-def cohorts(students)
-  listed_cohorts = []
-  students.each do |student|
-    unless listed_cohorts.include? student[:cohort]
-      listed_cohorts << student[:cohort]
-    end
-  end
-  listed_cohorts
-end
-
-def print_by_cohort(students, listed_cohorts)
-  listed_cohorts.each do |month|
-    students.each do |student|
-      if student[:cohort] == month
-        puts "#{student[:name]} (#{student[:cohort]} cohort),born in: #{student[:birthplace]} hobby: #{student[:hobby]}"
-      end
-    end
-  end
-end
-
-# end of practice methods
 
 def print_footer(students)
   # ensures plurals are used if needed
@@ -97,9 +79,4 @@ def print_footer(students)
     puts "Overall, we have #{students.count} great students".center(60)
   end
 end
-students = input_students
-cohorts = cohorts(students)
-#nothing happens until we call the methods
-print_header
-print(students)
-print_footer(students)
+interactive_menu
